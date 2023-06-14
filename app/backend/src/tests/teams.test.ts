@@ -11,10 +11,10 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Seu teste', () => {
+describe('Get /teams', () => {
  afterEach(() => sinon.restore)
 
-  it('Teste se retornar todos os times corretamente e com status 200', async () => {
+  it('Testa se retornar todos os times corretamente', async () => {
     sinon.stub(SequelizeTeams, 'findAll').resolves(teams as any)
 
     const { status, body } = await chai.request(app).get('/teams')
