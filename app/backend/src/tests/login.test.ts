@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe.only('Post /login', () => {
+describe('Post /login', () => {
   afterEach(sinon.restore)
   it('Testa se é possivel efetuar o login com sucesso', async () => {
     const body = validUser;

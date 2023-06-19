@@ -20,4 +20,13 @@ export default class UsersService {
     const token = createToken.sign({ id, email });
     return { status: 'SUCCESSFUL', data: { token } };
   }
+
+  public async getUserRole(email: string): Promise<ServiceResponse< { role: string }>> {
+    const user = await this.usersModel.findByEmail(email);
+
+    if (!user) {
+      return { status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' } };
+    }
+    return { status: 'SUCCESSFUL', data: { role: user.role } };
+  }
 }
