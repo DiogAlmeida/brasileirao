@@ -8,3 +8,9 @@ export interface ICRUDModelTeam <T> {
 export interface ICRUDModelUsers <T> {
   findByEmail(email: string): Promise<T | null>,
 }
+
+export interface ICRUDModelMatches <T> {
+  findAllMatches(): Promise<T[]>
+  findMatchesInProgress(): Promise<T[]>
+  findMatchesNotInProgress(): Promise<T[]>
+}
