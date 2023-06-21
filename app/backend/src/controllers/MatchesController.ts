@@ -21,10 +21,28 @@ export default class MatchesController {
     return res.status(200).json(allMatches.data);
   }
 
+  public async getMatchById(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const match = await this.matchesService.getMatchById(id);
+    return res.status(200).json(match.data);
+  }
+
   public async finishMatchById(req: Request, res: Response) {
     const { id } = req.params;
 
     const match = await this.matchesService.finishMatchById(id);
+    return res.status(200).json(match.data);
+  }
+
+  public async updateMatchById(req: Request, res: Response) {
+    const { id } = req.params;
+    const { homeTeamGoals, awayTeamGoals } = req.body;
+
+    const match = await this.matchesService.updateMatchById(id, homeTeamGoals, awayTeamGoals);
+    if (match.status !== 'SUCCESSFUL') {
+      return res.status(404).json(match.data);
+    }
     return res.status(200).json(match.data);
   }
 }

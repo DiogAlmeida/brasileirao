@@ -13,5 +13,7 @@ export interface ICRUDModelMatches <T> {
   findAllMatches(): Promise<T[]>
   findMatchesInProgress(): Promise<T[]>
   findMatchesNotInProgress(): Promise<T[]>
+  findMatchById(matchId: string): Promise<T | null>
   finishMatchById(matchId: string): Promise<{ message: string; }>
+  updateMatchById(matchId: string, homeTeamGoals: number, awayTeamGoals: number): void
 }

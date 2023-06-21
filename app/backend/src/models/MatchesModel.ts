@@ -32,11 +32,27 @@ export default class MatchesModel implements IMatchesModel {
     return allMatches;
   }
 
+  async findMatchById(matchId: string): Promise<IMatches | null> {
+    const match = await this.model.findOne({
+      include: [{ model: SequelizeTeams, as: 'homeTeam' },
+        { model: SequelizeTeams, as: 'awayTeam' }],
+      where: { id: matchId },
+    });
+    return match;
+  }
+
   async finishMatchById(matchId: string): Promise<{ message: string; }> {
     await this.model.update(
       { inProgress: false },
       { where: { id: matchId } },
     );
     return { message: 'Finished' };
+  }
+
+  async updateMatchById(matchId: string, homeTeamGoals: number, awayTeamGoals: number) {
+    await this.model.update(
+      { homeTeamGoals, awayTeamGoals },
+      { where: { id: matchId } },
+    );
   }
 }
