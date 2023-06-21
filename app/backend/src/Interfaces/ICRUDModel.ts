@@ -13,4 +13,5 @@ export interface ICRUDModelMatches <T> {
   findAllMatches(): Promise<T[]>
   findMatchesInProgress(): Promise<T[]>
   findMatchesNotInProgress(): Promise<T[]>
+  finishMatchById(matchId: string): Promise<{ message: string; }>
 }

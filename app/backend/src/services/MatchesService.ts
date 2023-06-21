@@ -25,4 +25,9 @@ export default class MatchesService {
     const allMatches = await this.matchesModel.findMatchesNotInProgress();
     return { status: 'SUCCESSFUL', data: allMatches };
   }
+
+  public async finishMatchById(matchId: string):Promise<ServiceResponse<{ message: string; }>> {
+    const response = await this.matchesModel.finishMatchById(matchId);
+    return { status: 'SUCCESSFUL', data: response };
+  }
 }

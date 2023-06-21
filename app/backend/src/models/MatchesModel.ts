@@ -31,4 +31,12 @@ export default class MatchesModel implements IMatchesModel {
     });
     return allMatches;
   }
+
+  async finishMatchById(matchId: string): Promise<{ message: string; }> {
+    await this.model.update(
+      { inProgress: false },
+      { where: { id: matchId } },
+    );
+    return { message: 'Finished' };
+  }
 }
