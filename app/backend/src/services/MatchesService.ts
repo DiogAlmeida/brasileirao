@@ -2,10 +2,13 @@ import { ServiceResponse } from '../Interfaces/ServiceResponse';
 import { IMatches } from '../Interfaces/matches/IMatches';
 import MatchesModel from '../models/MatchesModel';
 import { IMatchesModel } from '../Interfaces/matches/IMatchesModel';
+import { ITeamsModel } from '../Interfaces/teams/ITeamsModel';
+import TeamsModel from '../models/TeamsModel';
 
 export default class MatchesService {
   constructor(
     private matchesModel: IMatchesModel = new MatchesModel(),
+    private teamModel: ITeamsModel = new TeamsModel(),
   ) {}
 
   public async getAllMatches():
@@ -59,12 +62,19 @@ export default class MatchesService {
     homeTeamGoals: number,
     awayTeamGoals: number,
   ): Promise<ServiceResponse<IMatches>> {
-    const matchCreated = await this.matchesModel.createMatchInProgress(
-      homeTeamId,
-      awayTeamId,
-      homeTeamGoals,
-      awayTeamGoals,
-    );
+    if (homeTeamId === awayTeamId) {
+      return { status: 'UNPROCESSABLE',
+        data: { message: 'It is not possible to create a match with two equal teams' } };
+    }
+
+    const homeTeam = await this.teamModel.findById(homeTeamId);
+    const awayTeam = await this.teamModel.findById(awayTeamId);
+
+    if (!homeTeam || !awayTeam) {
+      return { status: 'NOT_FOUND', data: { message: 'There is no team with such id!' } };
+    }
+    const matchCreated = await this.matchesModel
+      .createMatchInProgress(homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals);
     return { status: 'SUCCESSFUL', data: matchCreated };
   }
 }

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import MatchesService from '../services/MatchesService';
+import mapStatusHTTP from '../utils/mapStatusHTTP';
 
 export default class MatchesController {
   constructor(
@@ -51,14 +52,10 @@ export default class MatchesController {
       awayTeamId,
       homeTeamGoals,
       awayTeamGoals } = req.body;
-    const matchCreated = await this.matchesService.createMatchInProgress(
-      homeTeamId,
-      awayTeamId,
-      homeTeamGoals,
-      awayTeamGoals,
-    );
+    const matchCreated = await this.matchesService
+      .createMatchInProgress(homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals);
     if (matchCreated.status !== 'SUCCESSFUL') {
-      return res.status(404).json(matchCreated.data);
+      return res.status(mapStatusHTTP(matchCreated.status)).json(matchCreated.data);
     }
     return res.status(201).json(matchCreated.data);
   }
