@@ -55,4 +55,15 @@ export default class MatchesModel implements IMatchesModel {
       { where: { id: matchId } },
     );
   }
+
+  async createMatchInProgress(
+    homeTeamId: number,
+    awayTeamId: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+  ): Promise<IMatches> {
+    const matchCreated = await this.model
+      .create({ homeTeamId, homeTeamGoals, awayTeamGoals, awayTeamId, inProgress: true });
+    return matchCreated;
+  }
 }

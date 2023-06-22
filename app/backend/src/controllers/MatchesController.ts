@@ -45,4 +45,21 @@ export default class MatchesController {
     }
     return res.status(200).json(match.data);
   }
+
+  public async createMatchInProgress(req: Request, res: Response) {
+    const { homeTeamId,
+      awayTeamId,
+      homeTeamGoals,
+      awayTeamGoals } = req.body;
+    const matchCreated = await this.matchesService.createMatchInProgress(
+      homeTeamId,
+      awayTeamId,
+      homeTeamGoals,
+      awayTeamGoals,
+    );
+    if (matchCreated.status !== 'SUCCESSFUL') {
+      return res.status(404).json(matchCreated.data);
+    }
+    return res.status(201).json(matchCreated.data);
+  }
 }

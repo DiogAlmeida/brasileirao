@@ -52,4 +52,19 @@ export default class MatchesService {
     match.awayTeamGoals = awayTeamGoals;
     return { status: 'SUCCESSFUL', data: match };
   }
+
+  public async createMatchInProgress(
+    homeTeamId: number,
+    awayTeamId: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+  ): Promise<ServiceResponse<IMatches>> {
+    const matchCreated = await this.matchesModel.createMatchInProgress(
+      homeTeamId,
+      awayTeamId,
+      homeTeamGoals,
+      awayTeamGoals,
+    );
+    return { status: 'SUCCESSFUL', data: matchCreated };
+  }
 }

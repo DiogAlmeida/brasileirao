@@ -16,4 +16,7 @@ export interface ICRUDModelMatches <T> {
   findMatchById(matchId: string): Promise<T | null>
   finishMatchById(matchId: string): Promise<{ message: string; }>
   updateMatchById(matchId: string, homeTeamGoals: number, awayTeamGoals: number): void
+  createMatchInProgress(
+    homeTeamId: number, awayTeamId: number,
+    homeTeamGoals: number, awayTeamGoals: number): Promise<T>
 }

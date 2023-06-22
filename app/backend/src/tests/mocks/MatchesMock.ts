@@ -90,5 +90,26 @@ const matchesNotInProgress = [
       }
     }
   ]
+
+  const matchCreateBody = {
+    "homeTeamId": 16,
+    "awayTeamId": 8, 
+    "homeTeamGoals": 5,
+    "awayTeamGoals": 0
+  }
+
+const matchCreateResponse = {
+  "id": 50,
+  "homeTeamId": 16,
+  "homeTeamGoals": 5,
+  "awayTeamGoals": 0,
+  "awayTeamId": 8,
+  "inProgress": true
+}
   
-  export { allMatchesMock, matchesInProgress, matchesNotInProgress }
+  export { 
+    allMatchesMock, 
+    matchesInProgress, 
+    matchCreateBody,
+    matchesNotInProgress,
+    matchCreateResponse }
