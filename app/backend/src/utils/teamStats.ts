@@ -1,3 +1,5 @@
+import { ILeaderboards } from '../Interfaces/Leaderboards/ILeaderboards';
+
 export type dataType = {
   id:number,
   homeTeamId:number,
@@ -55,7 +57,7 @@ export const historic = (homeTeamGoals: number, awayTeamGoals: number): historic
   return { totalVictories, totalDraws, totalLosses };
 };
 
-export const table = (teamName: string): staticTeamsType => ({
+export const createTable = (teamName: string): staticTeamsType => ({
   name: teamName,
   totalPoints: 0,
   totalGames: 0,
@@ -68,6 +70,11 @@ export const table = (teamName: string): staticTeamsType => ({
   efficiency: 0,
 });
 
+export const calculateTotalGames = (stats: any, teamName: string) => {
+  const newStats = { ...stats };
+  newStats[teamName].totalGames += 1;
+};
+
 export const resultsMatch = (
   stats: any,
   teamName: string,
@@ -77,7 +84,6 @@ export const resultsMatch = (
   newStats[teamName].totalVictories += matchResult.totalVictories;
   newStats[teamName].totalDraws += matchResult.totalDraws;
   newStats[teamName].totalLosses += matchResult.totalLosses;
-  newStats[teamName].totalPoints += matchResult.totalVictories * 3 + matchResult.totalDraws;
 };
 
 export const calculateTotalPoint = (
@@ -86,12 +92,16 @@ export const calculateTotalPoint = (
   matchResult: matchResultType,
 ) => {
   const newStats = { ...stats };
-  newStats[teamName].totalPoints += matchResult.totalVictories * 3 + matchResult.totalDraws;
+  const totalVictoriesPoint = matchResult.totalVictories * 3;
+  newStats[teamName].totalPoints += totalVictoriesPoint + matchResult.totalDraws;
 };
 
 export const calculateEfficiency = (stats: any, teamName: string) => {
   const newStats = { ...stats };
-  const efficiency = (newStats[teamName].totalPoints / (newStats[teamName].totalGames * 3)) * 100;
+
+  const multTotalGames = newStats[teamName].totalGames * 3;
+  const totalPointDivMultTotalGames = (newStats[teamName].totalPoints / multTotalGames);
+  const efficiency = (totalPointDivMultTotalGames * 100);
   newStats[teamName]
     .efficiency = efficiency.toFixed(2);
 };
@@ -108,3 +118,17 @@ export const calculateStatsGoals = (
   newStats[teamName]
     .goalsBalance = newStats[teamName].goalsFavor - newStats[teamName].goalsOwn;
 };
+
+export const sortedteamsStats = (teamsStats: ILeaderboards[]) => teamsStats
+  .sort((teamStatsA, teamStatsB) => {
+    if (teamStatsA.totalPoints !== teamStatsB.totalPoints) {
+      return teamStatsB.totalPoints - teamStatsA.totalPoints;
+    }
+    if (teamStatsA.totalVictories !== teamStatsB.totalVictories) {
+      return teamStatsB.totalVictories - teamStatsA.totalVictories;
+    }
+    if (teamStatsA.goalsBalance !== teamStatsB.goalsBalance) {
+      return teamStatsB.goalsBalance - teamStatsA.goalsBalance;
+    }
+    return teamStatsB.goalsFavor - teamStatsA.goalsFavor;
+  });

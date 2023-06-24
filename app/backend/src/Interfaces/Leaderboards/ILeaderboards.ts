@@ -10,4 +10,6 @@ export interface ILeaderboards extends Identifiable {
   totalLosses: number,
   goalsFavor: number,
   goalsOwn: number,
+  goalsBalance: number,
+  efficiency: string,
 }
